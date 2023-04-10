@@ -44,6 +44,35 @@ LOCK TABLES `college` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `consultant`
+--
+
+DROP TABLE IF EXISTS `consultant`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `consultant` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `password` varchar(10000) COLLATE utf8mb4_bin NOT NULL,
+  `salt` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `consultant_un` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `consultant`
+--
+
+LOCK TABLES `consultant` WRITE;
+/*!40000 ALTER TABLE `consultant` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consultant` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `contract`
 --
 
@@ -239,4 +268,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 18:22:29
+-- Dump completed on 2023-04-10 18:29:23
