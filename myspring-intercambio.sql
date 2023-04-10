@@ -16,6 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `college`
+--
+
+DROP TABLE IF EXISTS `college`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `college` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `province_id` int(10) unsigned NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_bin DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `college_un` (`name`),
+  KEY `college_FK` (`province_id`),
+  CONSTRAINT `college_FK` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `college`
+--
+
+LOCK TABLES `college` WRITE;
+/*!40000 ALTER TABLE `college` DISABLE KEYS */;
+/*!40000 ALTER TABLE `college` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `loa`
 --
 
@@ -46,6 +73,30 @@ CREATE TABLE `loa` (
 LOCK TABLES `loa` WRITE;
 /*!40000 ALTER TABLE `loa` DISABLE KEYS */;
 /*!40000 ALTER TABLE `loa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `province`
+--
+
+DROP TABLE IF EXISTS `province`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `province` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `province_un` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `province`
+--
+
+LOCK TABLES `province` WRITE;
+/*!40000 ALTER TABLE `province` DISABLE KEYS */;
+/*!40000 ALTER TABLE `province` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -124,4 +175,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 18:04:12
+-- Dump completed on 2023-04-10 18:10:29
