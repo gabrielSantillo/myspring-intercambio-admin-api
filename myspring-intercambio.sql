@@ -32,6 +32,7 @@ CREATE TABLE `loa` (
   `tuition` float NOT NULL,
   `total` float NOT NULL,
   `comission` float NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `loa_FK` (`student_id`),
   CONSTRAINT `loa_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -81,6 +82,36 @@ LOCK TABLES `student` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `visa`
+--
+
+DROP TABLE IF EXISTS `visa`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visa` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_id` int(10) unsigned NOT NULL,
+  `applied` tinyint(1) NOT NULL,
+  `applied_at` date NOT NULL,
+  `approved` tinyint(1) NOT NULL,
+  `analyst` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `visa_FK` (`student_id`),
+  CONSTRAINT `visa_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visa`
+--
+
+LOCK TABLES `visa` WRITE;
+/*!40000 ALTER TABLE `visa` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'myspring-intercambio-admin'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -93,4 +124,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 17:52:21
+-- Dump completed on 2023-04-10 18:04:12
