@@ -342,6 +342,34 @@ LOCK TABLES `visa` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `visa_files`
+--
+
+DROP TABLE IF EXISTS `visa_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `visa_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `visa_id` int(10) unsigned NOT NULL,
+  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `visa_files_FK` (`visa_id`),
+  CONSTRAINT `visa_files_FK` FOREIGN KEY (`visa_id`) REFERENCES `visa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `visa_files`
+--
+
+LOCK TABLES `visa_files` WRITE;
+/*!40000 ALTER TABLE `visa_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `visa_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Dumping routines for database 'myspring-intercambio-admin'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -354,4 +382,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 18:53:29
+-- Dump completed on 2023-04-10 18:56:06
