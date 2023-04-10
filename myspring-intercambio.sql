@@ -73,6 +73,34 @@ LOCK TABLES `consultant` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `consultat_session`
+--
+
+DROP TABLE IF EXISTS `consultat_session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `consultat_session` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `consultat_id` int(10) unsigned NOT NULL,
+  `token` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `last_seen` datetime NOT NULL DEFAULT current_timestamp(),
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `consultat_session_FK` (`consultat_id`),
+  CONSTRAINT `consultat_session_FK` FOREIGN KEY (`consultat_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `consultat_session`
+--
+
+LOCK TABLES `consultat_session` WRITE;
+/*!40000 ALTER TABLE `consultat_session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `consultat_session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `contract`
 --
 
@@ -133,6 +161,34 @@ CREATE TABLE `loa` (
 LOCK TABLES `loa` WRITE;
 /*!40000 ALTER TABLE `loa` DISABLE KEYS */;
 /*!40000 ALTER TABLE `loa` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `loa_files`
+--
+
+DROP TABLE IF EXISTS `loa_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `loa_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `loa_id` int(10) unsigned NOT NULL,
+  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `loa_files_FK` (`loa_id`),
+  CONSTRAINT `loa_files_FK` FOREIGN KEY (`loa_id`) REFERENCES `loa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `loa_files`
+--
+
+LOCK TABLES `loa_files` WRITE;
+/*!40000 ALTER TABLE `loa_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `loa_files` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -298,4 +354,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 18:45:08
+-- Dump completed on 2023-04-10 18:53:29
