@@ -60,7 +60,7 @@ CREATE TABLE `consultant` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `consultant_un` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,35 +69,37 @@ CREATE TABLE `consultant` (
 
 LOCK TABLES `consultant` WRITE;
 /*!40000 ALTER TABLE `consultant` DISABLE KEYS */;
+INSERT INTO `consultant` VALUES (3,'Gabriel','Santillo','gabriel@myspringintercambio.com','*DDEAA4E2A8DE6D3E2DF43CB852F69CB7FE642BE8','92068e32ba104ee5ae790c33037ec266820a0f122025d39b587ca9a3c6f9a5d9','2023-04-11 12:09:46');
 /*!40000 ALTER TABLE `consultant` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `consultat_session`
+-- Table structure for table `consultant_session`
 --
 
-DROP TABLE IF EXISTS `consultat_session`;
+DROP TABLE IF EXISTS `consultant_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consultat_session` (
+CREATE TABLE `consultant_session` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `consultat_id` int(10) unsigned NOT NULL,
+  `consultant_id` int(10) unsigned NOT NULL,
   `token` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `last_seen` datetime NOT NULL DEFAULT current_timestamp(),
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `consultat_session_FK` (`consultat_id`),
-  CONSTRAINT `consultat_session_FK` FOREIGN KEY (`consultat_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `consultant_session_un` (`token`),
+  KEY `consultant_session_FK` (`consultant_id`),
+  CONSTRAINT `consultant_session_FK` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `consultat_session`
+-- Dumping data for table `consultant_session`
 --
 
-LOCK TABLES `consultat_session` WRITE;
-/*!40000 ALTER TABLE `consultat_session` DISABLE KEYS */;
-/*!40000 ALTER TABLE `consultat_session` ENABLE KEYS */;
+LOCK TABLES `consultant_session` WRITE;
+/*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
+INSERT INTO `consultant_session` VALUES (12,3,'fe61285279194b5982589204870a43d8','2023-04-11 12:09:46');
+/*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -391,14 +393,14 @@ salt_input varchar(100),
 token_input varchar(100))
     MODIFIES SQL DATA
 begin
-	insert into consultant (first_name, last_name, email, password, salt)
-	values (first_name_input, last_name_input, email_input, password_input, salt_input);
+	insert into consultant(first_name, last_name, email, password, salt)
+	values (first_name_input, last_name_input, email_input, PASSWORD(CONCAT(password_input, salt_input)), salt_input);
 
-	insert into consultat_session (consultand_id, token)
+	insert into consultant_session (consultant_id, token)
 	values (last_insert_id(), token_input);
 
-	select cs.consultat_id as consultant_id, convert(cs.token using utf8) as token
-	from consultat_session cs
+	select cs.consultant_id as consultant_id, convert(cs.token using utf8) as token
+	from consultant_session cs
 	where cs.id = last_insert_id(); 
 	
 	commit;
@@ -418,4 +420,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 11:31:41
+-- Dump completed on 2023-04-11 12:12:39
