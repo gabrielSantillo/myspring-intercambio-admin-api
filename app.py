@@ -27,6 +27,9 @@ def delete_consultant():
 
 
 ########## CONSULTANT LOGIN ##########
+@app.post('/api/consultant_login')
+def login_consultant():
+    return endpoints.consultant_login.post()
 
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
