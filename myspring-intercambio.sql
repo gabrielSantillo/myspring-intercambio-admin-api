@@ -372,6 +372,42 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'myspring-intercambio-admin'
 --
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_consultant` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_consultant`(
+first_name_input varchar(50),
+last_name_input varchar(100),
+email_input varchar(100),
+password_input varchar(10000),
+salt_input varchar(100),
+token_input varchar(100))
+    MODIFIES SQL DATA
+begin
+	insert into consultant (first_name, last_name, email, password, salt)
+	values (first_name_input, last_name_input, email_input, password_input, salt_input);
+
+	insert into consultat_session (consultand_id, token)
+	values (last_insert_id(), token_input);
+
+	select cs.consultat_id as consultant_id, convert(cs.token using utf8) as token
+	from consultat_session cs
+	where cs.id = last_insert_id(); 
+	
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -382,4 +418,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-10 18:56:06
+-- Dump completed on 2023-04-11 11:31:41
