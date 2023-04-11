@@ -12,6 +12,10 @@ CORS(app)
 def post_consultant():
     return endpoints.consultant.post()
 
+@app.get('/api/consultant')
+def get_all_consultants():
+    return endpoints.consultant.get()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
