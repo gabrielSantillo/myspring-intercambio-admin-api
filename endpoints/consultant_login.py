@@ -4,6 +4,7 @@ import secrets
 import json
 from dbhelpers import run_statement
 
+
 def post():
     is_valid = check_endpoint_info(request.json, ['email', 'password'])
     if (is_valid != None):
@@ -23,3 +24,24 @@ def post():
         return make_response(json.dumps("Bad login attempt. Your password or/and email are wrong."), 400)
     else:
         return make_response(json.dumps("Sorry, an error has occurred"), 500)
+
+
+def delete():
+    # verifying if some value was sent as header
+    is_valid_header = check_endpoint_info(request.headers, ['token'])
+    if (is_valid_header != None):
+        return make_response(json.dumps(is_valid_header, default=str), 400)
+
+    # call the function that will delete the client token
+    results = run_statement('CALL delete_consultant_token(?)', [
+        request.headers.get('token')])
+
+    # if the response is a list and the row_updated is equal than 1 send 200 as response
+    if (type(results) == list and results[0]["row_updated"] == 1):
+        return make_response(json.dumps(results[0], default=str), 200)
+        # if the response is a list and the row_updated is equal than 0 send 400 as response
+    elif (type(results) == list and results[0]["row_updated"] == 0):
+        return make_response(json.dumps("Wrong token.", default=str), 400)
+        # else send 500 as an internal error
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
