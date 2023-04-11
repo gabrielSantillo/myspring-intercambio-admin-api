@@ -42,3 +42,36 @@ def get():
         return make_response(json.dumps("There is no user in the system.", default=str), 400)
     else:
         return make_response(json.dumps("Sorry, an error has occurred"), 500)
+
+
+def patch():
+    # verifying if some value was sent as header
+    is_valid_header = check_endpoint_info(request.headers, ['token'])
+    if (is_valid_header != None):
+        return make_response(json.dumps(is_valid_header, default=str), 400)
+
+     # in case the response from the function is "valid" will keep going with the processes of patching a client
+        # getting the client info basesd on its token
+    user_info = run_statement('CALL get_consultant_by_token(?)', [
+        request.headers.get('token')])
+    # verifying if the response is different than a list and its length is different than 1 to send a 400 as response
+    if (type(user_info) != list or len(user_info) != 1):
+        return make_response(json.dumps(user_info, default=str), 400)
+
+        # updating the user info with the data sent to be updated
+    update_user_info = check_data_sent(request.json, user_info[0], [
+        'first_name', 'last_name', 'email', 'password'])
+
+    # calling the function that will update the user info
+    results = run_statement('CALL edit_consultant(?,?,?,?,?)', [
+        update_user_info['first_name'], update_user_info['last_name'], update_user_info['email'], update_user_info['password'], request.headers.get('token')])
+
+    # if the response is a lsit and at row_updateded is equal to 1, send 200 as response
+    if (type(results) == list and results[0]['row_updated'] == 1):
+        return make_response(json.dumps(results[0], default=str), 200)
+     # if the response is a lsit and at row_updateded is equal to 0, send 400 as response
+    elif (type(results) == list and results[0]['row_updated'] == 0):
+        return make_response(json.dumps(results[0], default=str), 400)
+        # else send an 500 as internal error
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
