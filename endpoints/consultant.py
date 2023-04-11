@@ -75,3 +75,5 @@ def patch():
         # else send an 500 as internal error
     else:
         return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
+
+

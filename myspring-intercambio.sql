@@ -60,7 +60,7 @@ CREATE TABLE `consultant` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `consultant_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `consultant` (
 
 LOCK TABLES `consultant` WRITE;
 /*!40000 ALTER TABLE `consultant` DISABLE KEYS */;
-INSERT INTO `consultant` VALUES (3,'Gabriel','Santillo','gabriel@myspringintercambio.com','*DDEAA4E2A8DE6D3E2DF43CB852F69CB7FE642BE8','92068e32ba104ee5ae790c33037ec266820a0f122025d39b587ca9a3c6f9a5d9','2023-04-11 12:09:46');
+INSERT INTO `consultant` VALUES (4,'Gabriel','Santillo','gabriel@myspringintercambio.com','*1CE834CF142F0B4BAAE79FA25B0A92BA3C01AA79','793939983a581771258eeb889647f32e5a7c0533b51ff8a8aa89cb9715fedff9','2023-04-11 12:59:18');
 /*!40000 ALTER TABLE `consultant` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,7 +89,7 @@ CREATE TABLE `consultant_session` (
   UNIQUE KEY `consultant_session_un` (`token`),
   KEY `consultant_session_FK` (`consultant_id`),
   CONSTRAINT `consultant_session_FK` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `consultant_session` (
 
 LOCK TABLES `consultant_session` WRITE;
 /*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
-INSERT INTO `consultant_session` VALUES (12,3,'fe61285279194b5982589204870a43d8','2023-04-11 12:09:46');
+INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18');
 /*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -412,6 +412,36 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_consultant` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_consultant`(
+email_input varchar(100),
+password_input varchar(100),
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	delete c from consultant c
+	inner join consultant_session cs on c.id = cs.consultant_id  
+	where cs.token = token_input and c.password = PASSWORD(CONCAT(password_input, (SELECT salt FROM consultant WHERE email=email_input)));
+	
+	select row_count() as row_updated;
+	
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `edit_consultant` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -500,4 +530,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 12:45:11
+-- Dump completed on 2023-04-11 13:20:56
