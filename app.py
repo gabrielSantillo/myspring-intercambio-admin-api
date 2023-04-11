@@ -20,6 +20,10 @@ def get_all_consultants():
 def patch_consultant():
     return endpoints.consultant.patch()
 
+@app.delete('/api/consultant')
+def delete_consultant():
+    return endpoints.consultant.delete()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):

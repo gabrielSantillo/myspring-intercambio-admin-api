@@ -77,6 +77,8 @@ def patch():
         return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
 
 
+
+# THIS DELETE PROCEDURE IS NOT WORKING. I STILL NEED TO TAKE A LOOK ON HOW DO I GRAB THE USER PASSWORD
 def delete():
     # verify if the data expected to be sent was sent indeed
     is_valid_header = check_endpoint_info(request.headers, ['token'])
@@ -84,13 +86,13 @@ def delete():
         return make_response(json.dumps(is_valid_header, default=str), 400)
 
     # verify if the data expected to be sent was sent indeed
-    is_valid = check_endpoint_info(request.json, ['password', 'email'])
+    is_valid = check_endpoint_info(request.json, ['password'])
     if (is_valid != None):
         return make_response(json.dumps(is_valid, default=str), 400)
 
     # calling a procedure that edit the clients info
-    results = run_statement('CALL delete_consultant(?,?,?)', [
-                            request.json.get('email'), request.json.get('password'), request.headers.get('token')])
+    results = run_statement('CALL delete_consultant(?,?)', [
+                            request.json.get('password'), request.headers.get('token')])
 
     # if the results is a list and the length of the result at 'row_updated' is equal to one, return a success response
     if (type(results) == list and results[0]['row_updated'] == 1):
