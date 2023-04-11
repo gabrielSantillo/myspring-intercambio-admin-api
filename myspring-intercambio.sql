@@ -89,7 +89,7 @@ CREATE TABLE `consultant_session` (
   UNIQUE KEY `consultant_session_un` (`token`),
   KEY `consultant_session_FK` (`consultant_id`),
   CONSTRAINT `consultant_session_FK` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -98,7 +98,7 @@ CREATE TABLE `consultant_session` (
 
 LOCK TABLES `consultant_session` WRITE;
 /*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
-INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18');
+INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18'),(14,4,'e290d5eb183b6da065cb1fb8b518b6dac30dd022ba7d9e851a7b7e07efe38edb','2023-04-11 17:23:11');
 /*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -442,6 +442,34 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `delete_consultant_token` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_consultant_token`(
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	
+	delete cs
+	from consultant_session cs
+	where cs.token = token_input;
+	select row_count() as row_updated; 
+	
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `edit_consultant` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -538,7 +566,7 @@ token_input varchar(100)
     MODIFIES SQL DATA
 begin
 	
-	insert into consultant_session (consultand_id, token)
+	insert into consultant_session (consultant_id, token)
 	select c.id, token_input
 	from consultant c
 	where c.email = email_input and
@@ -565,4 +593,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 17:16:10
+-- Dump completed on 2023-04-11 17:26:48
