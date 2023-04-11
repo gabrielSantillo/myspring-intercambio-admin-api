@@ -422,14 +422,14 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_consultant`(
 email_input varchar(100),
-password_input varchar(100),
-token_input varchar(100)
+password_input varchar(100)
 )
     MODIFIES SQL DATA
 begin
+	
 	delete c from consultant c
-	inner join consultant_session cs on c.id = cs.consultant_id  
-	where cs.token = token_input and c.password = PASSWORD(CONCAT(password_input, (SELECT salt FROM consultant WHERE email=email_input)));
+	where c.email = email_input and
+	c.password = PASSWORD(concat(password_input, (select salt from consultant where email = email_input)));
 	
 	select row_count() as row_updated;
 	
@@ -530,4 +530,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 13:20:56
+-- Dump completed on 2023-04-11 17:07:42
