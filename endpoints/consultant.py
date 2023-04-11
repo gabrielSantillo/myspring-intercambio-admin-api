@@ -28,3 +28,17 @@ def post():
     # else a 500 as response
     else:
         return make_response(json.dumps(results[0], default=str), 500)
+
+
+def get():
+    # calling the procedure that will get all consultants
+    results = run_statement('CALL get_all_consultants()')
+
+    # if the response is a list and the length is different than zero send 200 as response
+    if (type(results) == list and len(results) != 0):
+        return make_response(json.dumps(results), 200)
+    # if the response is a list and the length is equal than zero
+    elif (type(results) == list and len(results) == 0):
+        return make_response(json.dumps("There is no user in the system.", default=str), 400)
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred"), 500)
