@@ -98,7 +98,7 @@ CREATE TABLE `consultant_session` (
 
 LOCK TABLES `consultant_session` WRITE;
 /*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
-INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18'),(14,4,'e290d5eb183b6da065cb1fb8b518b6dac30dd022ba7d9e851a7b7e07efe38edb','2023-04-11 17:23:11');
+INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18');
 /*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -258,7 +258,7 @@ DROP TABLE IF EXISTS `student`;
 CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `consultant_id` int(10) unsigned NOT NULL,
-  `program_id` int(10) unsigned NOT NULL,
+  `program_id` int(10) unsigned DEFAULT NULL,
   `first_name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
   `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `email` varchar(50) COLLATE utf8mb4_bin NOT NULL,
@@ -402,6 +402,42 @@ begin
 	select cs.consultant_id as consultant_id, convert(cs.token using utf8) as token
 	from consultant_session cs
 	where cs.id = last_insert_id(); 
+	
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_student` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_student`(
+first_name_input varchar(50),
+last_name_input varchar(100),
+email_input varchar(50),
+phone_number_input varchar(13),
+birth_date_input date,
+marital_status_input varchar(20),
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	insert into student (consultant_id, first_name, last_name, email, phone_number, birth_data, marital_status)
+	select cs.consultant_id, first_name_input, last_name_input, email_input, phone_number_input, birth_date_input,
+	marital_status_input
+	from consultant_session cs
+	where cs.token = token_input;
+
+	select last_insert_id() as id; 
 	
 	commit;
 END ;;
@@ -593,4 +629,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-11 17:26:48
+-- Dump completed on 2023-04-12 11:04:21
