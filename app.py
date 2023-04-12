@@ -49,6 +49,10 @@ def get_student():
 def patch_student():
     return endpoints.student.patch()
 
+@app.delete('/api/student')
+def delete_student():
+    return endpoints.student.delete()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):

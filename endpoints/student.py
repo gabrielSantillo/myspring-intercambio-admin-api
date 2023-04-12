@@ -63,10 +63,9 @@ def patch():
     is_valid_header = check_endpoint_info(request.headers, ['token'])
     if (is_valid_header != None):
         return make_response(json.dumps(is_valid_header, default=str), 400)
-    
 
     is_valid_data = check_endpoint_info(request.json, ['id'])
-    if(is_valid_data != None):
+    if (is_valid_data != None):
         return make_response(json.dumps(is_valid_data, default=str), 400)
 
     # getting the student by id
@@ -93,3 +92,28 @@ def patch():
         # else send 500 as an internal error
         else:
             return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
+
+
+def delete():
+    # verifying if some value was sent as header
+    is_valid_header = check_endpoint_info(request.headers, ['token'])
+    if (is_valid_header != None):
+        return make_response(json.dumps(is_valid_header, default=str), 400)
+
+    is_valid_data = check_endpoint_info(request.json, ['id'])
+    if (is_valid_data != None):
+        return make_response(json.dumps(is_valid_data, default=str), 400)
+
+        # calling the function that will edit a student
+    results = run_statement('CALL delete_student(?,?)',
+                            [request.json.get('id'), request.headers.get('token')])
+
+    # if the response is a list and the row_updated is equal than 1 send 200 as response
+    if (type(results) == list and results[0]['row_updated'] != 0):
+        return make_response(json.dumps(results[0], default=str), 200)
+        # if the response is a list and the row_updated is equal than 0 send 400 as response
+    elif (type(results) == list and results[0]['row_updated'] == 0):
+        return make_response(json.dumps(results[0], default=str), 400)
+        # else send 500 as an internal error
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
