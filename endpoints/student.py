@@ -14,7 +14,7 @@ def post():
         return make_response(json.dumps(is_valid_data, default=str), 400)
     
     results = run_statement('CALL add_student(?,?,?,?,?,?,?)', [
-        request.json.get('first_name'), request.json.get('last_name'), request.json.get('email'), request.json.get('phone_number'), request.json.get('birth_data'), request.json.get('marital_status'), request.headers.get('token')
+        request.json.get('first_name'), request.json.get('last_name'), request.json.get('email'), request.json.get('phone_number'), request.json.get('birth_date'), request.json.get('marital_status'), request.headers.get('token')
     ])
 
      # if the response is a list and the length is different than zero send 200 as response
