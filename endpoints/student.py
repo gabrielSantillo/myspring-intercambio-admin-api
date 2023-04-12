@@ -63,10 +63,15 @@ def patch():
     is_valid_header = check_endpoint_info(request.headers, ['token'])
     if (is_valid_header != None):
         return make_response(json.dumps(is_valid_header, default=str), 400)
+    
+
+    is_valid_data = check_endpoint_info(request.json, ['id'])
+    if(is_valid_data != None):
+        return make_response(json.dumps(is_valid_data, default=str), 400)
 
     # getting the student by id
-    student_info = run_statement('CALL get_student_by_id(?)', [
-        request.json.get('id')])
+    student_info = run_statement('CALL get_student_by_id(?,?)', [
+        request.json.get('id'), request.headers.get('token')])
 
     # checking to see if the response is valid to continue with the patching process
     if (type(student_info) == list and len(student_info) != 0):

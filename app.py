@@ -45,7 +45,7 @@ def post_student():
 def get_student():
     return endpoints.student.get()
 
-@app.get('/api/student')
+@app.patch('/api/student')
 def patch_student():
     return endpoints.student.patch()
 
