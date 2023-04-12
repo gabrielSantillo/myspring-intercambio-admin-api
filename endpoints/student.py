@@ -29,4 +29,4 @@ def post():
         return make_response(json.dumps(results[0], default=str), 200)
     # else a 500 as response
     else:
-        return make_response(json.dumps(results[0], default=str), 500)
+        return make_response(json.dumps(results, default=str), 500)
