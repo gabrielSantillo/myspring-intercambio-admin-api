@@ -38,7 +38,8 @@ def get():
         return make_response(json.dumps(is_valid_header, default=str), 400)
 
     if (request.args.get('id') != None):
-        results = run_statement('CALL get_students_by_id(?)', [request.args.get('id')])
+        results = run_statement('CALL get_students_by_id(?,?)', [
+                                request.args.get('id'), request.headers.get('token')])
 
         # if the response is a list and the length is different than zero send 200 as response
         if (type(results) == list and len(results) != 0):
@@ -55,3 +56,5 @@ def get():
         # else a 500 as response
         else:
             return make_response(json.dumps(results[0], default=str), 500)
+
+

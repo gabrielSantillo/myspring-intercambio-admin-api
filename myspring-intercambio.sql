@@ -577,6 +577,45 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
 /*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `edit_student` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `edit_student`(
+id_input int unsigned,
+consultant_id_input int unsigned,
+program_id_input int unsigned,
+first_name_input varchar(50),
+last_name_input varchar(100),
+email_input varchar(100),
+phone_number_input varchar(13),
+birth_date_input date,
+marital_status_input varchar(20),
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	update student s
+	inner join consultant c on c.id = s.consultant_id 
+	inner join consultant_session cs on cs.consultant_id = c.id
+	set s.first_name = first_name_input, s.last_name = last_name_input, s.email = email_input, s.phone_number = phone_number_input,
+	s.birth_date = birth_date_input, s.marital_status = marital_status_input
+	where s.id = id_input and cs.token = token_input;
+
+	select row_count() as row_updated;
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
 /*!50003 DROP PROCEDURE IF EXISTS `get_all_consultants` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -655,7 +694,10 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_students_by_id`(id_input int unsigned)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_students_by_id`(
+id_input int unsigned,
+token_input varchar(100)
+)
 begin
 	
 	select 
@@ -672,8 +714,39 @@ begin
 	from student s
 	inner join program p on p.id = s.program_id 
 	inner join college c on c.id = p.college_id
-	inner join consultant c2 on c2.id = s.consultant_id 
-	where s.id = id_input;
+	inner join consultant c2 on c2.id = s.consultant_id
+	inner join consultant_session cs on cs.consultant_id = c2.id
+	where s.id = id_input and cs.token = token_input;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `get_student_by_id` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_student_by_id`(
+id_input int unsigned,
+token_input varchar(100)
+)
+begin
+	select s.id, s.consultant_id, s.program_id, convert(s.first_name using utf8) as first_name,
+	convert(s.last_name using utf8) as last_name, convert(s.email using utf8) as email,
+	convert(s.phone_number using utf8) as phone_number, convert(s.birth_date using utf8) as birth_date,
+	convert(s.marital_status using utf8) as marital_status
+	
+	from student s
+	inner join consultant c on c.id = s.consultant_id 
+	inner join consultant_session cs on cs.consultant_id = c.id
+	where s.id = id_input and cs.token = token_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -725,4 +798,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-12 16:25:31
+-- Dump completed on 2023-04-12 17:08:43
