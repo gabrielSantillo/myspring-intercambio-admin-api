@@ -276,7 +276,7 @@ CREATE TABLE `student` (
   KEY `student_FK_1` (`consultant_id`),
   CONSTRAINT `student_FK` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `student_FK_1` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +285,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,4,1,'Natalia','Fernandes','natalia_br@hotmail.com','5878880975','1985-06-14','married','2023-04-12 11:39:48');
+INSERT INTO `student` VALUES (1,4,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,4,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42'),(5,4,1,'Gaabriel','TESTING','TESTING@gmail.com','5511973605966','1994-10-18','married','2023-04-12 15:44:27');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -608,12 +608,13 @@ DELIMITER ;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_students`()
 begin
-	select id, consultant_id, convert(s.first_name using utf8) as first_name, convert(s.last_name using utf8) as last_name,
+	select s.id, s.consultant_id, convert(s.first_name using utf8) as first_name, convert(s.last_name using utf8) as last_name,
 	convert(s.email using utf8) as email, convert(s.phone_number using utf8) as phone_number,
 	convert(p.name using utf8) as program, convert(p.url using utf8) as program_url, convert(c.name using utf8) as college
 	from student s
 	inner join program p on p.id = s.program_id 
-	inner join college c on c.id = p.college_id;
+	inner join college c on c.id = p.college_id
+	order by s.first_name ASC;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -689,4 +690,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-12 15:10:54
+-- Dump completed on 2023-04-12 15:45:40
