@@ -41,6 +41,10 @@ def delete_consultant_token():
 def post_student():
     return endpoints.student.post()
 
+@app.get('/api/student')
+def get_student():
+    return endpoints.student.get()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
