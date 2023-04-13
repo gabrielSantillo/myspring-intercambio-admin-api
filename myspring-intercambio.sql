@@ -154,7 +154,7 @@ CREATE TABLE `loa` (
   KEY `loa_FK_1` (`program_id`),
   CONSTRAINT `loa_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `loa_FK_1` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,6 +163,7 @@ CREATE TABLE `loa` (
 
 LOCK TABLES `loa` WRITE;
 /*!40000 ALTER TABLE `loa` DISABLE KEYS */;
+INSERT INTO `loa` VALUES (1,1,1,'2023-04-13','2023-04-14',1500,8000,8228,0.15,'2023-04-13 12:31:08');
 /*!40000 ALTER TABLE `loa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -440,7 +441,7 @@ begin
 	
 	insert into loa(student_id, program_id, date_received, payment_date, payment_value, tuition, total, comission)
 	select s.id, program_id_input, date_received_input, payment_date_input, payment_value_input,
-	tuition_input, total_input, comission_input, token_input
+	tuition_input, total_input, comission_input
 	from student s
 	inner join consultant c on s.consultant_id = c.id
 	inner join consultant_session cs on cs.consultant_id = c.id 
@@ -779,12 +780,17 @@ begin
 	
 	convert(p.name using utf8) as program, convert(p.terms using utf8) as terms,
 	convert(p.credential using utf8) as credential,
-	convert(p.url using utf8) as program_url, convert(c.name using utf8) as college
+	convert(p.url using utf8) as program_url, convert(c.name using utf8) as college,
+	
+	convert(l.date_received using utf8) as date_received, convert(l.payment_date using utf8) as payment_date,
+	convert(l.payment_value using utf8) as payment_value, convert(l.tuition using utf8) as tuition,
+	convert(l.total using utf8) as total, convert(l.comission using utf8) as comission  
 	
 	
 	from student s
 	inner join program p on p.id = s.program_id 
 	inner join college c on c.id = p.college_id
+	inner join loa l on l.student_id = s.id 
 	inner join consultant c2 on c2.id = s.consultant_id
 	inner join consultant_session cs on cs.consultant_id = c2.id
 	where s.id = id_input and cs.token = token_input;
@@ -869,4 +875,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-13 12:08:51
+-- Dump completed on 2023-04-13 12:35:43
