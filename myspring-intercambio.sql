@@ -285,7 +285,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,4,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,4,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42'),(5,4,1,'Gaabriel','TESTING','TESTING@gmail.com','5511973605966','1994-10-18','married','2023-04-12 15:44:27');
+INSERT INTO `student` VALUES (1,4,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,4,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -407,6 +407,46 @@ begin
 	from consultant_session cs
 	where cs.id = last_insert_id(); 
 	
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_loa` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_loa`(
+student_id_input int unsigned,
+program_id_input int unsigned,
+date_received_input date,
+payment_date_input date,
+payment_value_input float,
+tuition_input float,
+total_input float,
+comission_input float,
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	
+	insert into loa(student_id, program_id, date_received, payment_date, payment_value, tuition, total, comission)
+	select s.id, program_id_input, date_received_input, payment_date_input, payment_value_input,
+	tuition_input, total_input, comission_input, token_input
+	from student s
+	inner join consultant c on s.consultant_id = c.id
+	inner join consultant_session cs on cs.consultant_id = c.id 
+	where s.id = student_id_input and cs.token = token_input;
+
+	select last_insert_id() as loa_id; 
 	commit;
 END ;;
 DELIMITER ;
@@ -829,4 +869,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-12 17:38:47
+-- Dump completed on 2023-04-13 12:08:51
