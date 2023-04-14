@@ -63,6 +63,10 @@ def post_loa():
 def patch_loa():
     return endpoints.loa.patch()
 
+@app.delete('api/loa')
+def delete():
+    return endpoints.loa.delete()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
