@@ -59,6 +59,10 @@ def delete_student():
 def post_loa():
     return endpoints.loa.post()
 
+@app.patch('/api/loa')
+def patch_loa():
+    return endpoints.loa.patch()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
