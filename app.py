@@ -63,8 +63,8 @@ def post_loa():
 def patch_loa():
     return endpoints.loa.patch()
 
-@app.delete('api/loa')
-def delete():
+@app.delete('/api/loa')
+def delete_loa():
     return endpoints.loa.delete()
 
 
