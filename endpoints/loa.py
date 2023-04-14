@@ -23,3 +23,5 @@ def post():
         return make_response(json.dumps("Wrong token or wrong student id", default=str), 400)
     else:
         return make_response(json.dumps("Sorry, an error has occurred.", default=str), 500)
+
+
