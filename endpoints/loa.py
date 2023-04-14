@@ -36,17 +36,17 @@ def patch():
         return make_response(json.dumps(is_valid_data, default=str), 400)
 
     # getting the student by id
-    loa_info = run_statement('CALL get_loa_by_id(?,?)', [
-        request.json.get('loa_id'), request.headers.get('token')])
+    loa_info = run_statement('CALL get_loa_by_id(?)', [
+        request.json.get('loa_id')])
 
     # checking to see if the response is valid to continue with the patching process
     if (type(loa_info) == list and len(loa_info) != 0):
         update_loa_info = check_data_sent(request.json, loa_info[0],
-                                              ['student_id', 'program_id', 'date_received', 'payment_date', 'payment_value', 'tuition', 'total', 'comission'])
+                                              ['id', 'student_id', 'program_id', 'date_received', 'payment_date', 'payment_value', 'tuition', 'total', 'comission'])
 
         # calling the function that will edit a student
-        results = run_statement('CALL edit_loa(?,?,?,?,?,?,?,?,?)',
-                                [update_loa_info['student_id'], update_loa_info['program_id'],
+        results = run_statement('CALL edit_loa(?,?,?,?,?,?,?,?,?,?)',
+                                [update_loa_info['id'], update_loa_info['student_id'], update_loa_info['program_id'],
                                  update_loa_info['date_received'], update_loa_info['payment_date'],
                                     update_loa_info['payment_value'], update_loa_info['tuition'], update_loa_info['total'], update_loa_info['comission'], request.headers.get('token')])
 
