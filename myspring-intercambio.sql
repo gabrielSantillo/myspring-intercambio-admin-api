@@ -675,7 +675,8 @@ begin
 	inner join student s on s.id = l.student_id 
 	inner join consultant c on c.id = s.consultant_id 
 	inner join consultant_session cs on cs.consultant_id = c.id
-	set l.student_id = student_id_input, l.program_id = program_id_input, l.date_received = date_received_input, l.payment_date = payment_date_input, l.payment_value =payment_value_input,
+	set l.student_id = student_id_input, l.program_id = program_id_input, l.date_received = date_received_input,
+	l.payment_date = payment_date_input, l.payment_value = payment_value_input,
 	l.tuition = tuition_input, l.total = total_input, l.comission = comission_input
 	where l.id = loa_id_input and cs.token = token_input;
 	
@@ -810,11 +811,11 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_loa_by_id`(
 loa_id_input int unsigned
 )
 begin
-	select l.student_id, l.program_id, convert(l.date_received using utf8) as date_received,
+	select l.id, l.student_id, l.program_id, convert(l.date_received using utf8) as date_received,
 	convert(l.payment_date using utf8) as payment_date, convert(l.payment_value using utf8) as payment_value,
 	convert(l.tuition using utf8) as tuition, convert(l.total using utf8) as total, convert(l.comission using utf8) as comission
 	from loa l
-	where l.id =  loa_id_input;
+	where l.id = loa_id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -940,4 +941,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-14 17:12:19
+-- Dump completed on 2023-04-14 17:25:49
