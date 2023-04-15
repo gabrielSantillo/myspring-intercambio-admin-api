@@ -561,7 +561,7 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_college`(college_id int unsigned)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `delete_college`(college_id_input int unsigned)
     MODIFIES SQL DATA
 begin
 	delete c
@@ -1069,4 +1069,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-15 11:36:47
+-- Dump completed on 2023-04-15 11:42:54
