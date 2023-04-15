@@ -31,7 +31,7 @@ CREATE TABLE `college` (
   UNIQUE KEY `college_un` (`name`),
   KEY `college_FK` (`province_id`),
   CONSTRAINT `college_FK` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `college` (
 
 LOCK TABLES `college` WRITE;
 /*!40000 ALTER TABLE `college` DISABLE KEYS */;
-INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45');
+INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45'),(8,2,'British Columbia Institute of Technology','2023-04-15 11:09:37');
 /*!40000 ALTER TABLE `college` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -391,18 +391,12 @@ UNLOCK TABLES;
 DELIMITER ;;
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_college`(
 province_id_input int unsigned,
-name_input varchar(100),
-token_input varchar(100)
+name_input varchar(100)
 )
     MODIFIES SQL DATA
 begin
 	insert into college(province_id, name)
-	select province_id_input, name_input
-	from program p
-	inner join student s on s.program_id = p.id
-	inner join consultant c on c.id = s.consultant_id 
-	inner join consultant_session cs on cs.consultant_id = c.id
-	where cs.token = token_input;
+	select province_id_input, name_input;
 
 	select last_insert_id() as id; 
 	
@@ -1026,4 +1020,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-15 10:45:49
+-- Dump completed on 2023-04-15 11:10:01

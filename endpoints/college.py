@@ -4,15 +4,11 @@ import json
 from dbhelpers import run_statement
 
 def post():
-    is_valid_header =  check_endpoint_info(request.headers, ['token'])
-    if(is_valid_header != None):
-        return make_response(json.dumps(is_valid_header, default=str), 400)
-    
     is_valid_data = check_endpoint_info(request.json, ['province_id', 'name'])
     if(is_valid_data != None):
         return make_response(json.dumps(is_valid_data, default=str), 400)
     
-    results = run_statement('CALL add_college(?,?,?)', [request.json.get('province_id'), request.json.get('name'), request.headers.get('token')])
+    results = run_statement('CALL add_college(?,?)', [request.json.get('province_id'), request.json.get('name')])
 
     if(type(results) == list and results[0]['id'] != 0):
         return make_response(json.dumps(results[0], default=str), 200)
