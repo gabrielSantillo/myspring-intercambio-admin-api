@@ -20,4 +20,19 @@ def post():
         return make_response(json.dumps("Sorry, an error has occurred.", default=str), 500)
 
 
+def get():
+    is_valid = check_endpoint_info(request.args, ['province_id'])
+    if (is_valid != None):
+        return make_response(json.dumps(is_valid, default=str), 400)
 
+    results = run_statement('CALL get_all_colleges(?)',
+                            [request.args.get('province_id')])
+
+    if (type(results) == list and len(results) != 0):
+        colleges = organize_college_response(results)
+        return make_response(json.dumps(colleges, default=str), 200)
+    elif (type(results) == list and len(results) == 0):
+        return make_response(json.dumps("Wrong college id.", default=str),
+                             400)
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred.", default=str), 500)
