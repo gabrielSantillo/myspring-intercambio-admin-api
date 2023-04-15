@@ -1,7 +1,7 @@
 from flask import Flask
 from dbcreds import production_mode
 from flask_cors import CORS
-import endpoints.consultant, endpoints.consultant_login, endpoints.student, endpoints.loa
+import endpoints.consultant, endpoints.consultant_login, endpoints.student, endpoints.loa, endpoints.province
 
 # calling the Flask function which will return a value that will be used in my API
 app = Flask(__name__)
@@ -66,6 +66,12 @@ def patch_loa():
 @app.delete('/api/loa')
 def delete_loa():
     return endpoints.loa.delete()
+
+
+########## PROVINCE ##########
+@app.post('/api/province')
+def post_province():
+    return endpoints.province.post()
 
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
