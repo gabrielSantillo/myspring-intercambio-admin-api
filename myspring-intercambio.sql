@@ -796,10 +796,13 @@ DELIMITER ;
 /*!50003 SET character_set_results = utf8mb4 */ ;
 /*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
 DELIMITER ;;
-CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_colleges`()
+CREATE DEFINER=`root`@`localhost` PROCEDURE `get_all_colleges`(province_id_input int unsigned)
 begin
-	select (id, province_id, name)
-	from college;
+	select c.id as college_id, c.province_id, convert(p.name using utf8) as province_name, convert(c.name using utf8) college_name, 
+	convert(c.created_at using utf8) as created_at
+	from college c
+	inner join province p on p.id = c.province_id
+	where p.id = province_id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1040,4 +1043,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-15 11:21:00
+-- Dump completed on 2023-04-15 11:29:15
