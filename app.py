@@ -69,9 +69,9 @@ def delete_loa():
 
 
 ########## PROVINCE ##########
-@app.post('/api/province')
-def post_province():
-    return endpoints.province.post()
+@app.get('/api/province')
+def get_all_provinces():
+    return endpoints.province.get()
 
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
