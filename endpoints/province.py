@@ -3,11 +3,7 @@ from apihelpers import check_endpoint_info, check_data_sent
 import json
 from dbhelpers import run_statement
 
-def get():
-    is_valid_header = check_endpoint_info(request.headers, ['token'])
-    if(is_valid_header != None):
-        return make_response(json.dumps(is_valid_header, default=str), 400)
-    
+def get():  
     results = run_statement('CALL get_all_provinces(?)', [request.headers.get('token')])
 
     if(type(results) == list and len(results) != 0):
