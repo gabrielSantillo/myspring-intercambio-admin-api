@@ -944,7 +944,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `get_college_by_id`(id_input int uns
 begin
 	select c.id, c.province_id, convert(c.name using utf8) as name
 	from college c
-	where c.id = in_input;
+	where c.id = id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1119,4 +1119,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-19 17:34:17
+-- Dump completed on 2023-04-19 17:46:11

@@ -52,24 +52,20 @@ def delete():
     else:
         return make_response(json.dumps("Sorry, an error has occurred.", default=str), 500)
 
-def patch():
-    is_valid_header = check_endpoint_info(request.headers, ['token'])
-    if (is_valid_header != None):
-        return make_response(json.dumps(is_valid_header, default=str), 400)
-    
+def patch(): 
     is_valid_data = check_endpoint_info(request.json, ['id'])
     if (is_valid_data != None):
         return make_response(json.dumps(is_valid_data, default=str), 400)
     
-    college_info = run_statement('CALL get_college_by_id(?,?)', [
-        request.json.get('id'), request.headers.get('token')])
+    college_info = run_statement('CALL get_college_by_id(?)', [
+        request.json.get('id')])
     
     if (type(college_info) == list and len(college_info) != 0):
         update_college_info = check_data_sent(request.json, college_info[0],
                                               ['id', 'province_id', 'name'])
 
         # calling the function that will edit a college
-        results = run_statement('CALL edit_college(?,?,?,?,?,?,?,?,?,?)',
+        results = run_statement('CALL edit_college(?,?,?)',
                                 [update_college_info['id'], update_college_info['province_id'], update_college_info['name'], request.headers.get('token')])
 
         # if the response is a list and the row_updated is equal than 1 send 200 as response

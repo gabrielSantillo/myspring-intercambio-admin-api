@@ -87,6 +87,10 @@ def get_all_colleges():
 def delete_college():
     return endpoints.college.delete()
 
+@app.patch('/api/college')
+def patch_college():
+    return endpoints.college.patch()
+
 
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
