@@ -66,7 +66,7 @@ def patch():
 
         # calling the function that will edit a college
         results = run_statement('CALL edit_college(?,?,?)',
-                                [update_college_info['id'], update_college_info['province_id'], update_college_info['name'], request.headers.get('token')])
+                                [update_college_info['id'], update_college_info['province_id'], update_college_info['name']])
 
         # if the response is a list and the row_updated is equal than 1 send 200 as response
         if (type(results) == list and results[0]['row_updated'] != 0):
