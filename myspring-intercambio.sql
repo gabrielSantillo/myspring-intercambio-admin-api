@@ -213,7 +213,7 @@ CREATE TABLE `program` (
   PRIMARY KEY (`id`),
   KEY `programs_FK` (`college_id`),
   CONSTRAINT `programs_FK` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +222,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
-INSERT INTO `program` VALUES (1,1,'Business Administration','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34');
+INSERT INTO `program` VALUES (1,1,'Business Administration','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34'),(2,1,'Business Training','https://www.sait.ca/business-and-industry/corporate-training/business-training',1,'Diploma','2023-04-19 18:09:12'),(3,1,'Digital Transformation','https://www.sait.ca/business-and-industry/corporate-training/digital-transformation',1,'Diploma','2023-04-19 18:10:54');
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -506,9 +506,7 @@ begin
 	insert into program(college_id, name, url, terms, credential)
 	values (college_id_input, name_input, url_input, terms_input, credential_input);
 
-	select cs.id 
-	from consultant_session cs 
-	where cs.token = token_input;
+	select last_insert_id() as id;
 
 	commit;
 END ;;
@@ -1153,4 +1151,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-19 17:57:17
+-- Dump completed on 2023-04-19 18:11:42
