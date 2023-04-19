@@ -31,7 +31,7 @@ CREATE TABLE `college` (
   UNIQUE KEY `college_un` (`name`),
   KEY `college_FK` (`province_id`),
   CONSTRAINT `college_FK` FOREIGN KEY (`province_id`) REFERENCES `province` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `college` (
 
 LOCK TABLES `college` WRITE;
 /*!40000 ALTER TABLE `college` DISABLE KEYS */;
-INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45');
+INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45'),(9,2,'British Columbia Institute of Technology','2023-04-19 17:51:29');
 /*!40000 ALTER TABLE `college` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -476,6 +476,40 @@ begin
 	where s.id = student_id_input and cs.token = token_input;
 
 	select last_insert_id() as loa_id; 
+	commit;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'IGNORE_SPACE,STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `add_program` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8mb4 */ ;
+/*!50003 SET character_set_results = utf8mb4 */ ;
+/*!50003 SET collation_connection  = utf8mb4_unicode_ci */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `add_program`(
+college_id_input int unsigned,
+name_input varchar(100),
+url_input varchar(1000),
+terms_input tinyint,
+credential_input varchar(30),
+token_input varchar(100)
+)
+    MODIFIES SQL DATA
+begin
+	insert into program(college_id, name, url, terms, credential)
+	values (college_id_input, name_input, url_input, terms_input, credential_input);
+
+	select cs.id 
+	from consultant_session cs 
+	where cs.token = token_input;
+
 	commit;
 END ;;
 DELIMITER ;
@@ -1119,4 +1153,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-19 17:46:11
+-- Dump completed on 2023-04-19 17:57:17
