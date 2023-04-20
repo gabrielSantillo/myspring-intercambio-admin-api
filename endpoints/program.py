@@ -86,3 +86,21 @@ def patch():
             return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
         
 
+def delete():
+    is_valid_data = check_endpoint_info(request.json, ['id'])
+    if (is_valid_data != None):
+        return make_response(json.dumps(is_valid_data, default=str), 400)
+
+        # calling the function that will edit a student
+    results = run_statement('CALL delete_program(?)',
+                            [request.json.get('id')])
+
+    # if the response is a list and the row_updated is equal than 1 send 200 as response
+    if (type(results) == list and results[0]['row_updated'] != 0):
+        return make_response(json.dumps(results[0], default=str), 200)
+        # if the response is a list and the row_updated is equal than 0 send 400 as response
+    elif (type(results) == list and results[0]['row_updated'] == 0):
+        return make_response(json.dumps(results[0], default=str), 400)
+        # else send 500 as an internal error
+    else:
+        return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)

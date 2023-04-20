@@ -105,6 +105,10 @@ def get_program():
 def patch_program():
     return endpoints.program.patch()
 
+@app.delete('/api/program')
+def delete_program():
+    return endpoints.program.delete()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
