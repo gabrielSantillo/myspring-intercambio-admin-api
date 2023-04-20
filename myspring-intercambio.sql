@@ -222,7 +222,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
-INSERT INTO `program` VALUES (1,1,'Business','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34'),(2,1,'Business Training','https://www.sait.ca/business-and-industry/corporate-training/business-training',1,'Diploma','2023-04-19 18:09:12'),(3,1,'Digital Transformation','https://www.sait.ca/business-and-industry/corporate-training/digital-transformation',1,'Diploma','2023-04-19 18:10:54');
+INSERT INTO `program` VALUES (1,1,'Business','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34'),(2,1,'Business Training','https://www.sait.ca/business-and-industry/corporate-training/business-training',1,'Diploma','2023-04-19 18:09:12');
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1321,4 +1321,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 11:45:51
+-- Dump completed on 2023-04-20 11:51:45
