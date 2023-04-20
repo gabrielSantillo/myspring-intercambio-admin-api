@@ -1105,7 +1105,7 @@ begin
 	inner join college c on c.id = p.college_id
 	inner join province pr on pr.id = c.province_id
 	inner join student s on s.program_id = p.id 
-	where c.id = student_id_input;
+	where s.id = student_id_input;
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -1231,4 +1231,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 10:56:26
+-- Dump completed on 2023-04-20 11:05:06
