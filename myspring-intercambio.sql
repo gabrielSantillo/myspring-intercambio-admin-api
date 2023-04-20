@@ -1134,7 +1134,7 @@ program_id_input int unsigned
 begin
 	
 	select p.id, p.college_id,
-	convert(p.name using utf8) as program_name, convert(p.url using utf8) as url_program,
+	convert(p.name using utf8) as name, convert(p.url using utf8) as url,
 	p.terms, convert(p.credential using utf8) as credential 
 	from program p
 	where p.id = program_id_input;
@@ -1291,4 +1291,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 11:29:36
+-- Dump completed on 2023-04-20 11:38:42
