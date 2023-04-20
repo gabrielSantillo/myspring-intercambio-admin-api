@@ -70,7 +70,7 @@ def patch():
                                               ['id', 'college_id', 'name', 'url', 'terms', 'credential'])
 
         # calling the function that will edit a program
-        results = run_statement('CALL program(?,?,?,?,?,?)',
+        results = run_statement('CALL edit_program(?,?,?,?,?,?)',
                                 [update_program_info['id'], update_program_info['college_id'],
                                  update_program_info['name'], update_program_info['url'],
                                     update_program_info['terms'], update_program_info['credential']])

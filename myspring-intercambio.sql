@@ -857,7 +857,8 @@ begin
 	update program p
 	set p.id = id_input, p.college_id = college_id_input,
 	p.name = name_input, p.url = url_input, p.terms = terms_input,
-	p.credential = credential_input;
+	p.credential = credential_input
+	where p.id = id_input;
 
 	select row_count() as row_updated;
 	
@@ -1291,4 +1292,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 11:38:42
+-- Dump completed on 2023-04-20 11:42:33
