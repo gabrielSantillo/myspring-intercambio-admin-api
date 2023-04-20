@@ -101,6 +101,10 @@ def post_program():
 def get_program():
     return endpoints.program.get()
 
+@app.patch('/api/program')
+def patch_program():
+    return endpoints.program.patch()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
