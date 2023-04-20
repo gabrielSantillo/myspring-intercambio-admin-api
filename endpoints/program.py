@@ -18,3 +18,15 @@ def post():
         return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
     
 
+def get():
+    if(request.args.get('student_id') != None):
+        return
+    elif(request.args.get('college_id') != None):
+        return
+    else:
+        results = run_statement('CALL get_all_programs()')
+
+        if(type(results) == list and len(results) != 0):
+            return make_response(json.dumps(results, default=str), 200)
+        else:
+            return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)

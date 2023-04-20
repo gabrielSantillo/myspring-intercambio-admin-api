@@ -97,6 +97,10 @@ def patch_college():
 def post_program():
     return endpoints.program.post()
 
+@app.get('/api/program')
+def get_program():
+    return endpoints.program.get()
+
 
 # if statement to check if the production_mode variable is true, if yes, run in production mode, if not, run in testing mode
 if (production_mode):
