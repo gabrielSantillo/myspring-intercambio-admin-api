@@ -45,95 +45,61 @@ INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45'),(9,2,'British Co
 UNLOCK TABLES;
 
 --
--- Table structure for table `contract`
+-- Table structure for table `consultant`
 --
 
-DROP TABLE IF EXISTS `contract`;
+DROP TABLE IF EXISTS `consultant`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `contract` (
+CREATE TABLE `consultant` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` int(10) unsigned NOT NULL,
-  `signed` tinyint(1) NOT NULL,
-  `date` date DEFAULT NULL,
+  `first_name` varchar(30) COLLATE utf8mb4_bin NOT NULL,
+  `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `password` varchar(1000) COLLATE utf8mb4_bin NOT NULL,
+  `salt` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `contract_FK` (`student_id`),
-  CONSTRAINT `contract_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `consultant_un` (`email`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contract`
+-- Dumping data for table `consultant`
 --
 
-LOCK TABLES `contract` WRITE;
-/*!40000 ALTER TABLE `contract` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contract` ENABLE KEYS */;
+LOCK TABLES `consultant` WRITE;
+/*!40000 ALTER TABLE `consultant` DISABLE KEYS */;
+INSERT INTO `consultant` VALUES (1,'Gabriel','Santillo','gabriel@myspringintercambio.com','*F0A6D3BFB1E43CFD4E95C728CA8AD2C07FDF85CF','859320e2f9f0c1580b7674fc1abb33917ebb38b4b0020235a2a69dc5c645d15c','2023-04-24 15:37:43');
+/*!40000 ALTER TABLE `consultant` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Table structure for table `loa`
+-- Table structure for table `consultant_session`
 --
 
-DROP TABLE IF EXISTS `loa`;
+DROP TABLE IF EXISTS `consultant_session`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `loa` (
+CREATE TABLE `consultant_session` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` int(10) unsigned NOT NULL,
-  `program_id` int(10) unsigned NOT NULL,
-  `date_received` date NOT NULL,
-  `payment_date` date NOT NULL,
-  `payment_value` float NOT NULL,
-  `tuition` float NOT NULL,
-  `total` float NOT NULL,
-  `comission` float NOT NULL,
+  `consultant_id` int(10) unsigned NOT NULL,
+  `token` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  KEY `loa_FK` (`student_id`),
-  KEY `loa_FK_1` (`program_id`),
-  CONSTRAINT `loa_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `loa_FK_1` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  UNIQUE KEY `consultant_session_un` (`consultant_id`),
+  CONSTRAINT `consultant_session_FK` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `loa`
+-- Dumping data for table `consultant_session`
 --
 
-LOCK TABLES `loa` WRITE;
-/*!40000 ALTER TABLE `loa` DISABLE KEYS */;
-INSERT INTO `loa` VALUES (1,1,1,'2023-04-13','2023-04-14',1500,8000,8228,1,'2023-04-13 12:31:08');
-/*!40000 ALTER TABLE `loa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `loa_files`
---
-
-DROP TABLE IF EXISTS `loa_files`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `loa_files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `loa_id` int(10) unsigned NOT NULL,
-  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `loa_files_FK` (`loa_id`),
-  CONSTRAINT `loa_files_FK` FOREIGN KEY (`loa_id`) REFERENCES `loa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `loa_files`
---
-
-LOCK TABLES `loa_files` WRITE;
-/*!40000 ALTER TABLE `loa_files` DISABLE KEYS */;
-/*!40000 ALTER TABLE `loa_files` ENABLE KEYS */;
+LOCK TABLES `consultant_session` WRITE;
+/*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
+INSERT INTO `consultant_session` VALUES (1,1,'3b1c8d64322243d3945faaccab58654c','2023-04-24 15:37:43');
+/*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -154,7 +120,7 @@ CREATE TABLE `program` (
   PRIMARY KEY (`id`),
   KEY `programs_FK` (`college_id`),
   CONSTRAINT `programs_FK` FOREIGN KEY (`college_id`) REFERENCES `college` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +129,7 @@ CREATE TABLE `program` (
 
 LOCK TABLES `program` WRITE;
 /*!40000 ALTER TABLE `program` DISABLE KEYS */;
-INSERT INTO `program` VALUES (1,1,'Business','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34'),(2,1,'Business Training','https://www.sait.ca/business-and-industry/corporate-training/business-training',1,'Diploma','2023-04-19 18:09:12');
+INSERT INTO `program` VALUES (1,1,'Business','https://www.sait.ca/programs-and-courses/diplomas/business-administration',4,'Diploma','2023-04-12 12:13:34'),(2,1,'Business Training','https://www.sait.ca/business-and-industry/corporate-training/business-training',1,'Diploma','2023-04-19 18:09:12'),(4,1,'testing','google.com',1,'diploma','2023-04-24 16:02:12');
 /*!40000 ALTER TABLE `program` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,20 +168,22 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `consultant_id` int(10) unsigned NOT NULL,
   `program_id` int(10) unsigned DEFAULT NULL,
-  `first_name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `first_name` varchar(30) COLLATE utf8mb4_bin NOT NULL,
   `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `email` varchar(50) COLLATE utf8mb4_bin NOT NULL,
+  `email` varchar(100) COLLATE utf8mb4_bin NOT NULL,
   `phone_number` varchar(13) COLLATE utf8mb4_bin NOT NULL,
   `birth_date` date NOT NULL,
   `marital_status` varchar(20) COLLATE utf8mb4_bin NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
-  UNIQUE KEY `student_un_email` (`email`),
-  UNIQUE KEY `student_un_phone` (`phone_number`),
+  UNIQUE KEY `student_un` (`email`),
   KEY `student_FK` (`program_id`),
-  CONSTRAINT `student_FK` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+  KEY `student_FK_1` (`consultant_id`),
+  CONSTRAINT `student_FK` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `student_FK_1` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,94 +192,8 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42');
+INSERT INTO `student` VALUES (1,1,NULL,'Gaabriel','TESTING','TESTING@gmail.com','5511973605966','1994-10-18','married','2023-04-24 15:42:02');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `student_files`
---
-
-DROP TABLE IF EXISTS `student_files`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `student_files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` int(10) unsigned NOT NULL,
-  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `student_files_FK` (`student_id`),
-  CONSTRAINT `student_files_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `student_files`
---
-
-LOCK TABLES `student_files` WRITE;
-/*!40000 ALTER TABLE `student_files` DISABLE KEYS */;
-/*!40000 ALTER TABLE `student_files` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `visa`
---
-
-DROP TABLE IF EXISTS `visa`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `visa` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `student_id` int(10) unsigned NOT NULL,
-  `applied` tinyint(1) NOT NULL,
-  `applied_at` date NOT NULL,
-  `approved` tinyint(1) NOT NULL,
-  `analyst` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `visa_FK` (`student_id`),
-  CONSTRAINT `visa_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `visa`
---
-
-LOCK TABLES `visa` WRITE;
-/*!40000 ALTER TABLE `visa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `visa` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `visa_files`
---
-
-DROP TABLE IF EXISTS `visa_files`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `visa_files` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `visa_id` int(10) unsigned NOT NULL,
-  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  KEY `visa_files_FK` (`visa_id`),
-  CONSTRAINT `visa_files_FK` FOREIGN KEY (`visa_id`) REFERENCES `visa` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `visa_files`
---
-
-LOCK TABLES `visa_files` WRITE;
-/*!40000 ALTER TABLE `visa_files` DISABLE KEYS */;
-/*!40000 ALTER TABLE `visa_files` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -442,7 +324,11 @@ token_input varchar(100)
     MODIFIES SQL DATA
 begin
 	insert into program(college_id, name, url, terms, credential)
-	values (college_id_input, name_input, url_input, terms_input, credential_input);
+	select college_id_input, name_input, url_input, terms_input, credential_input
+	from student s
+	inner join consultant c on c.id = s.consultant_id 
+	inner join consultant_session cs on cs.consultant_id = c.id 
+	where cs.token = token_input;
 
 	select last_insert_id() as id;
 
@@ -474,7 +360,7 @@ token_input varchar(100)
 )
     MODIFIES SQL DATA
 begin
-	insert into student (consultant_id, first_name, last_name, email, phone_number, birth_data, marital_status)
+	insert into student (consultant_id, first_name, last_name, email, phone_number, birth_date, marital_status)
 	select cs.consultant_id, first_name_input, last_name_input, email_input, phone_number_input, birth_date_input,
 	marital_status_input
 	from consultant_session cs
@@ -1259,4 +1145,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 14:58:58
+-- Dump completed on 2023-04-24 16:03:17
