@@ -45,36 +45,6 @@ INSERT INTO `college` VALUES (1,1,'SAIT','2023-04-12 11:50:45'),(9,2,'British Co
 UNLOCK TABLES;
 
 --
--- Table structure for table `consultant`
---
-
-DROP TABLE IF EXISTS `consultant`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consultant` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `first_name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `password` varchar(10000) COLLATE utf8mb4_bin NOT NULL,
-  `salt` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `consultant_un` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `consultant`
---
-
-LOCK TABLES `consultant` WRITE;
-/*!40000 ALTER TABLE `consultant` DISABLE KEYS */;
-INSERT INTO `consultant` VALUES (4,'Gabriel','Santillo','gabriel@myspringintercambio.com','*1CE834CF142F0B4BAAE79FA25B0A92BA3C01AA79','793939983a581771258eeb889647f32e5a7c0533b51ff8a8aa89cb9715fedff9','2023-04-11 12:59:18');
-/*!40000 ALTER TABLE `consultant` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `contract`
 --
 
@@ -232,7 +202,6 @@ DROP TABLE IF EXISTS `student`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `student` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `consultant_id` int(10) unsigned NOT NULL,
   `program_id` int(10) unsigned DEFAULT NULL,
   `first_name` varchar(50) COLLATE utf8mb4_bin NOT NULL,
   `last_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
@@ -245,9 +214,7 @@ CREATE TABLE `student` (
   UNIQUE KEY `student_un_email` (`email`),
   UNIQUE KEY `student_un_phone` (`phone_number`),
   KEY `student_FK` (`program_id`),
-  KEY `student_FK_1` (`consultant_id`),
-  CONSTRAINT `student_FK` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `student_FK_1` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `student_FK` FOREIGN KEY (`program_id`) REFERENCES `program` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -257,7 +224,7 @@ CREATE TABLE `student` (
 
 LOCK TABLES `student` WRITE;
 /*!40000 ALTER TABLE `student` DISABLE KEYS */;
-INSERT INTO `student` VALUES (1,4,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,4,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42');
+INSERT INTO `student` VALUES (1,1,'Natalia','Fernandes','natalia_br@hotmail.com','5877775190','1985-06-14','married','2023-04-12 11:39:48'),(3,1,'Gabriel','Santillo','gasantillo7@gmail.com','5878880975','1996-06-11','married','2023-04-12 15:38:22'),(4,1,'Gustavo','Poletto','gustavo.poletto@gmail.com','5511973605965','1994-10-18','married','2023-04-12 15:43:42');
 /*!40000 ALTER TABLE `student` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1292,4 +1259,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 14:56:59
+-- Dump completed on 2023-04-24 14:58:58
