@@ -103,6 +103,34 @@ INSERT INTO `consultant_session` VALUES (1,1,'3b1c8d64322243d3945faaccab58654c',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `contract`
+--
+
+DROP TABLE IF EXISTS `contract`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `contract` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_id` int(10) unsigned NOT NULL,
+  `signed` tinyint(1) NOT NULL,
+  `date` date NOT NULL,
+  `created_at` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `contract_FK` (`student_id`),
+  CONSTRAINT `contract_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `contract`
+--
+
+LOCK TABLES `contract` WRITE;
+/*!40000 ALTER TABLE `contract` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contract` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `loa`
 --
 
@@ -1177,4 +1205,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 16:10:57
+-- Dump completed on 2023-04-24 16:13:23
