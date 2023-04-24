@@ -257,6 +257,34 @@ INSERT INTO `student` VALUES (1,1,NULL,'Gaabriel','TESTING','TESTING@gmail.com',
 UNLOCK TABLES;
 
 --
+-- Table structure for table `student_files`
+--
+
+DROP TABLE IF EXISTS `student_files`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `student_files` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `student_id` int(10) unsigned NOT NULL,
+  `file_name` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `description` varchar(100) COLLATE utf8mb4_bin NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  KEY `student_files_FK` (`student_id`),
+  CONSTRAINT `student_files_FK` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `student_files`
+--
+
+LOCK TABLES `student_files` WRITE;
+/*!40000 ALTER TABLE `student_files` DISABLE KEYS */;
+/*!40000 ALTER TABLE `student_files` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `visa`
 --
 
@@ -1236,4 +1264,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-24 16:18:36
+-- Dump completed on 2023-04-24 16:42:18
