@@ -75,35 +75,6 @@ INSERT INTO `consultant` VALUES (4,'Gabriel','Santillo','gabriel@myspringinterca
 UNLOCK TABLES;
 
 --
--- Table structure for table `consultant_session`
---
-
-DROP TABLE IF EXISTS `consultant_session`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `consultant_session` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `consultant_id` int(10) unsigned NOT NULL,
-  `token` varchar(100) COLLATE utf8mb4_bin NOT NULL,
-  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `consultant_session_un` (`token`),
-  KEY `consultant_session_FK` (`consultant_id`),
-  CONSTRAINT `consultant_session_FK` FOREIGN KEY (`consultant_id`) REFERENCES `consultant` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `consultant_session`
---
-
-LOCK TABLES `consultant_session` WRITE;
-/*!40000 ALTER TABLE `consultant_session` DISABLE KEYS */;
-INSERT INTO `consultant_session` VALUES (13,4,'8c48325af05f4629a8aa1e8b9f7c468e','2023-04-11 12:59:18');
-/*!40000 ALTER TABLE `consultant_session` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `contract`
 --
 
@@ -1321,4 +1292,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2023-04-20 11:51:45
+-- Dump completed on 2023-04-24 14:56:59
