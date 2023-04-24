@@ -8,11 +8,11 @@ def post():
     if (is_valid_data != None):
         return make_response(json.dumps(is_valid_data, default=str), 400)
     
-    results = run_statement('CALL add_program(?,?,?,?,?)', [request.json.get('college_id'), request.json.get('name'), request.json.get('url'), request.json.get('terms'), request.json.get('credential')])
+    results = run_statement('CALL add_program(?,?,?,?,?,?)', [request.json.get('college_id'), request.json.get('name'), request.json.get('url'), request.json.get('terms'), request.json.get('credential'), request.headers.get('token')])
 
-    if(type(results) == list and len(results) != 0):
+    if(type(results) == list and results[0]['id'] != 0):
         return make_response(json.dumps(results, default=str), 200)
-    elif(type(results) == list and len(results) == 0):
+    elif(type(results) == list and results[0]['id'] == 0):
         return make_response(json.dumps("Wrong token", default=str), 400)
     else:
         return make_response(json.dumps("Sorry, an error has occurred", default=str), 500)
